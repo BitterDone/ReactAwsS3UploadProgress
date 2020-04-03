@@ -16,6 +16,7 @@ function App() {
    const handleFile = event => {
      console.log(event?.target?.files)
       setSelectedFiles(event?.target?.files)
+      setUploadProg(new Array(Object.keys(event?.target?.files).length).fill(0))
    }
 
    const upload = event => {
