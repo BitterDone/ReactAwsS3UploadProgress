@@ -33,6 +33,9 @@ function App() {
           const newUploadProg = [...uploadProg]
           const percent = parseInt(100*progressEvent.loaded / progressEvent.total)
           newUploadProg[index] = percent
+          console.log(uploadProg)
+          console.log(newUploadProg)
+          console.log('______________')
           setUploadProg(newUploadProg)
         })
         .send((err, data) => {
