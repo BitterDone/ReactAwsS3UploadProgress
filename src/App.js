@@ -35,9 +35,11 @@ function App() {
        s3.putObject(params)
         .on('httpUploadProgress', (progressEvent, response) => {
           const newUploadProg = [...uploadProg]
-          const percent = parseInt(progressEvent.loaded / progressEvent.total)
+          const percent = parseInt(100*progressEvent.loaded / progressEvent.total)
           newUploadProg[index] = percent
-          console.log(percent)
+          console.log(uploadProg)
+          console.log(newUploadProg)
+          console.log('__________________')
           setUploadProg(newUploadProg)
         })
         .send(s)
@@ -57,15 +59,21 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <input type="file" name="file" onChange={handleFile} multiple/>
-        <button type="button" class="btn btn-success btn-block" onClick={upload}>Upload</button> 
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button type="button" class="btn btn-success btn-block" onClick={upload}>Upload</button>
+        {uploadProg.map(percent => (<div style={{
+          margin: 5,
+          width: 100,
+          height: 10,
+          backgroundColor: 'green'
+        }}>
+          <div style={{
+            height: 8,
+            width: percent,
+            backgroundColor: 'yellow',
+          }}>
+
+          </div>
+        </div>))}
       </header>
     </div>
   );
