@@ -4,6 +4,11 @@ import './App.css';
 import AWS from 'aws-sdk';
 import { accessKeyId, secretAccessKey } from './secrets'
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as stuffActions from '../../actions/stuffActions';
+import PropTypes from 'prop-types';
+
 function App() {
   const [selectedFiles, setSelectedFiles] = useState({})
   const [uploadProg, setUploadProg] = useState([])
@@ -18,19 +23,6 @@ function App() {
       setSelectedFiles(event?.target?.files)
       setUploadProg(new Array(Object.keys(event?.target?.files).length).fill(0))
    }
-   
-   /*
-   https://stackoverflow.com/questions/61004673/the-callback-in-s3-putobject-onhttpuploadprogress-callback-doesnt-update
-   https://www.reddit.com/r/reactjs/comments/fu87ap/the_callback_in_s3putobjectonhttpuploadprogress/
-
-   const [arr, setArr] = useState([0, 0]);
-   const fn = () => {
-     setArr(arr => {
-       arr[0] = 1;
-       return arr;
-     });
-   }
-   */
 
    const upload = event => {
      Object.keys(selectedFiles).forEach((key, index) => {
@@ -87,4 +79,34 @@ function App() {
   );
 }
 
+suffList.propTypes = {
+  stuffActions: PropTypes.object,
+  uploadprogressActions: PropTypes.object,
+  filesActions: PropTypes.object,
+
+  stuffs: PropTypes.array,
+  uploadprogress: PropTypes.array,
+  files: PropTypes.array,
+};
+
+function mapStateToProps(state) {
+  return {
+    stuffs: state.stuffs,
+    files: state.files,
+    uploadprogress: state.uploadprogress,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    stuffActions: bindActionCreators(stuffActions, dispatch),
+    uploadprogressActions: bindActionCreators(uploadprogressActions, dispatch),
+    filesActions: bindActionCreators(filesActions, dispatch),
+  };
+}
+
 export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
